@@ -2,6 +2,7 @@ package com.info.department.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ public class DepartmentController {
    @GetMapping("/{id}")
    public ResponseEntity<?> findById(@PathVariable Long id) {
       Department department = departmentService.findById(id);
+      if(Objects.isNull(department)) department = new Department(id, "Math");
       System.out.println("counter: " + department);
       System.out.println("port: " + port);
       return ResponseEntity.ok().body(department);

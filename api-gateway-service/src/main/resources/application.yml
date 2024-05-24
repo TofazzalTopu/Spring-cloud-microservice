@@ -34,7 +34,12 @@ spring:
               args:
                 name: USER-SERVICE
                 fallbackuri: forward:/userServiceFallBack
-
+        - id : AUTHENTICATION-SERVICE
+          uri: lb://AUTHENTICATION-SERVICE
+          predicates:
+            - Path=/login/
+      main:
+        web-application-type: reactive
 
 hystrix:
   command:
@@ -49,3 +54,10 @@ management:
     web:
       exposure:
         include: hystrix.stream
+
+authentication:
+  enabled: false
+
+
+jwt:
+  secret: VHKJMNnbfhbsjkdbVJHVkhbJBKJBsmfnbngygiyguFYVHJbkjnjnsjdnlkfn

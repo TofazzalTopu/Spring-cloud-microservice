@@ -44,6 +44,9 @@ public class GatewayConfig {
                 .route("DEPARTMENT-SERVICE",r -> r.path("/departments/*")
                         .filters(f-> f.filters(authFilter))
                         .uri("lb://DEPARTMENT-SERVICE"))
+                .route("KUBERNETES-SERVICE",r -> r.path("/kubernetes/*")
+                        .filters(f-> f.filters(authFilter))
+                        .uri("lb://KUBERNETES-SERVICE"))
                 .route("auth-server",r -> r.path("/login")
                         .uri("http://localhost:8087"))
                 .build();

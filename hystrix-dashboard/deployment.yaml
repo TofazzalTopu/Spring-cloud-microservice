@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: hystrix-dashboard
+spec:
+  selector:
+    matchLabels:
+      app: hystrix-dashboard
+  replicas: 3 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: hystrix-dashboard
+    spec:
+      containers:
+        - name: hystrix-dashboard
+          image: tofazzal/hystrix-dashboard.jar:latest
+          # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9095
+# The port that the container is running on in the cluster
+
+---
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: hystrix-dashboard-svc
+spec:
+  selector:
+    app: hystrix-dashboard
+  ports:
+    - protocol: "TCP"
+      port: 9095 # The port that the service is running on in the cluster
+      targetPort: 9095 # The port exposed by the service
+  type: NodePort # type of the service.

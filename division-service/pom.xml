@@ -75,6 +75,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>division-service</finalName>
 	</build>
 
 </project>

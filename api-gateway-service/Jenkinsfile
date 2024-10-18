@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build Maven') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/TofazzalTopu/eureka-server']])
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/TofazzalTopu/eureka-service']])
                 sh 'mvn clean install'
             }
         }
@@ -15,7 +15,7 @@ pipeline {
         stage ("Build Docker Image"){
             steps{
                 script {
-                    sh 'docker build -t tofazzal/eureka-server .'
+                    sh 'docker build -t tofazzal/api-gateway-service .'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'my-docker-hub-pwd', variable: 'my-docker-hub-pwd')]) {
                     sh 'docker login -u tofazzal -p ${my-docker-hub-pwd}'
                     }
-                    sh 'docker push tofazzal/eureka-server'
+                    sh 'docker push tofazzal/api-gateway-service'
                 }
             }
         }

@@ -6,6 +6,6 @@ public interface DivisionService {
 
    Division save(Division division);
 
-   Division findById(Long departmentId);
+   Division findById(Long id);
 
 }

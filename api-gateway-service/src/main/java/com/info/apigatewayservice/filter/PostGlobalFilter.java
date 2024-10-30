@@ -6,6 +6,8 @@ import com.info.apigatewayservice.model.Company;
 import com.info.apigatewayservice.model.Department;
 import com.info.apigatewayservice.model.Student;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBuffer;
@@ -23,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class PostGlobalFilter implements WebFilter {
+
+    public static final Logger logger = LoggerFactory.getLogger(PostGlobalFilter.class);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -51,6 +55,8 @@ public class PostGlobalFilter implements WebFilter {
                         joinedBuffers.read(content);
                         String responseBody = new String(content, StandardCharsets.UTF_8);//MODIFY RESPONSE and Return the Modified response
                         System.out.println("requestId: " + request.getId() + ", method: " + request.getMethodValue() + ", req url: " + request.getURI() + ", response body :" + responseBody);
+                        logger.info("Response -> " + responseBody);
+                        logger.info("requestId: " + request.getId() + ", method: " + request.getMethodValue() + ", req url: " + request.getURI() + ", response body :" + responseBody);
                         try {
                             if (request.getURI().getPath().equals("/first") && request.getMethodValue().equals("GET")) {
                                 List<Student> student = new ObjectMapper().readValue(responseBody, List.class);

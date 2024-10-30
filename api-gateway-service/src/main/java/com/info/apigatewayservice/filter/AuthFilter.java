@@ -3,6 +3,8 @@ package com.info.apigatewayservice.filter;
 import com.info.apigatewayservice.util.AuthUtil;
 import com.info.apigatewayservice.util.JWTUtil;
 import com.info.apigatewayservice.validator.RouteValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -20,6 +22,8 @@ import io.jsonwebtoken.Claims;
 @RefreshScope
 public class AuthFilter implements GatewayFilter {
 
+    public static final Logger logger = LoggerFactory.getLogger(AuthFilter.class);
+
     @Autowired
     RouteValidator routeValidator;
 
@@ -34,34 +38,35 @@ public class AuthFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        if(!authEnabled) {
+        if (!authEnabled) {
             System.out.println("Authentication is disabled. To enable it, make \"authentication.enabled\" property as true");
             return chain.filter(exchange);
         }
-        String token ="";
+        String token = "";
         ServerHttpRequest request = exchange.getRequest();
 
-        if(routeValidator.isSecured.test(request)) {
+        if (routeValidator.isSecured.test(request)) {
             System.out.println("validating authentication token");
-            if(this.isCredsMissing(request)) {
+            if (this.isCredsMissing(request)) {
                 System.out.println("Credentials missing");
-                return this.onError(exchange,"Credentials missing",HttpStatus.UNAUTHORIZED);
+                logger.error(HttpStatus.UNAUTHORIZED + ", Credentials missing");
+                return this.onError(exchange, "Credentials missing", HttpStatus.UNAUTHORIZED);
             }
             if (request.getHeaders().containsKey("userName") && request.getHeaders().containsKey("role")) {
                 token = authUtil.getToken(request.getHeaders().get("userName").toString(), request.getHeaders().get("role").toString());
-            }
-            else {
+            } else {
                 token = request.getHeaders().get("Authorization").toString().split(" ")[1];
             }
 
-            if(jwtUtil.isInvalid(token)) {
-                return this.onError(exchange,"Auth header invalid",HttpStatus.UNAUTHORIZED);
-            }
-            else {
+            if (jwtUtil.isInvalid(token)) {
+                logger.error(HttpStatus.UNAUTHORIZED + " Auth header invalid");
+                return this.onError(exchange, "Auth header invalid", HttpStatus.UNAUTHORIZED);
+            } else {
+                logger.error(HttpStatus.OK + ", Authentication is successful for the user: " + request.getHeaders().get("userName"));
                 System.out.println("Authentication is successful");
             }
 
-            this.populateRequestWithHeaders(exchange,token);
+            this.populateRequestWithHeaders(exchange, token);
         }
         return chain.filter(exchange);
     }
@@ -73,7 +78,7 @@ public class AuthFilter implements GatewayFilter {
     }
 
     private String getAuthHeader(ServerHttpRequest request) {
-        return  request.getHeaders().getOrEmpty("Authorization").get(0);
+        return request.getHeaders().getOrEmpty("Authorization").get(0);
     }
 
 
@@ -85,7 +90,7 @@ public class AuthFilter implements GatewayFilter {
         Claims claims = jwtUtil.getALlClaims(token);
         exchange.getRequest()
                 .mutate()
-                .header("id",String.valueOf(claims.get("id")))
+                .header("id", String.valueOf(claims.get("id")))
                 .header("role", String.valueOf(claims.get("role")))
                 .build();
     }

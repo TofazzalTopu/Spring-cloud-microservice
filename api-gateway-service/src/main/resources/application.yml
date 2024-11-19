@@ -56,7 +56,7 @@ management:
         include: hystrix.stream
 
 authentication:
-  enabled: true
+  enabled: false
 
 
 jwt:

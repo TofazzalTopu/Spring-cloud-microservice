@@ -1,5 +1,5 @@
-server:
-  port: 8082
+#server:
+#  port: 8082
 
 #eureka:
 #  client:
@@ -21,4 +21,47 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
-
+resilience4j:
+  bulkhead:
+    instances:
+      rateLimiterEventsExample:
+        max-concurrent-calls: 5
+        max-wait-duration: 0
+  circuitbreaker:
+    instances:
+      rateLimiterEventsExample:
+        automatic-transition-from-open-to-half-open-enabled: true
+        failure-rate-threshold: 80
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 4
+        sliding-window-size: 10
+        sliding-window-type: COUNT_BASED
+        wait-duration-in-open-state: 10s
+  ratelimiter:
+    instances:
+      rateLimiterExample:
+        limit-for-period: 3
+        limit-refresh-period: 10s
+        timeout-duration: 1s
+  retry:
+    instances:
+      rateLimiterEventsExample:
+        enable-exponential-backoff: true
+        max-attempts: 5
+        retry-exceptions: org.springframework.web.client.ResourceAccessException
+        wait-duration: 2s
+      retryEventsExample:
+        enable-exponential-backoff: true
+        max-attempts: 5
+        retry-exceptions: org.springframework.web.client.ResourceAccessException
+        wait-duration: 2s
+      retryExample:
+        enable-exponential-backoff: true
+        max-attempts: 5
+        retry-exceptions: org.springframework.web.client.ResourceAccessException
+        wait-duration: 2s
+  timelimiter:
+    instances:
+      rateLimiterEventsExample:
+        cancel-running-future: false
+        timeout-duration: 1s

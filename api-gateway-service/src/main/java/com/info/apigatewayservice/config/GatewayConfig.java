@@ -47,7 +47,7 @@ public class GatewayConfig {
                         .uri("http://localhost:8084"))
                 .route("DEPARTMENT-SERVICE", r -> r.path("/departments/*")
                         .filters(f -> f.filters(authFilter)
-                                .circuitBreaker(c-> c.setFallbackUri("forward:/departmentServiceFallBack")))
+                                .circuitBreaker(c-> c.setName("").setFallbackUri("forward:/departmentServiceFallBack")))
                         .uri("lb://DEPARTMENT-SERVICE"))
                 .route("KUBERNETES-SERVICE", r -> r.path("/kubernetes/*")
                         .filters(f -> f.filters(authFilter))

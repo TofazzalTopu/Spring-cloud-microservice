@@ -54,7 +54,7 @@ public class PostGlobalFilter implements WebFilter {
                         byte[] content = new byte[joinedBuffers.readableByteCount()];
                         joinedBuffers.read(content);
                         String responseBody = new String(content, StandardCharsets.UTF_8);//MODIFY RESPONSE and Return the Modified response
-                        System.out.println("requestId: " + request.getId() + ", method: " + request.getMethodValue() + ", req url: " + request.getURI() + ", response body :" + responseBody);
+                        System.out.println("requestId: " + request.getId() + ", method: " + request.getMethodValue() + ", req url: " + request.getURI() + ", request body :" + request);
                         logger.info("Response -> " + responseBody);
                         logger.info("requestId: " + request.getId() + ", method: " + request.getMethodValue() + ", req url: " + request.getURI() + ", response body :" + responseBody);
                         try {

@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: USER-SERVICE
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+  #    loadbalancer:
+  #      zone: default
   zipkin:
     base-url: http://127.0.0.1:9411/zipkin/
   datasource:

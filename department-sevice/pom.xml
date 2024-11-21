@@ -40,6 +40,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
+		<!--Retry, Rate Limiting dependencies start-->
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
 			<artifactId>resilience4j-spring-boot2</artifactId>
@@ -54,6 +55,36 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<!--Retry, Rate Limiting dependencies end-->
+
+		<!--Distributed tracing dependencies start-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.zipkin.zipkin2</groupId>
+			<artifactId>zipkin</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<!--Distributed tracing dependencies end-->
+		<!--<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
+			<version>1.30.0</version>
+		</dependency>-->
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>7.3</version>
+		</dependency>
+		<!--Distributed tracing dependencies end-->
 
 
 		<dependency>

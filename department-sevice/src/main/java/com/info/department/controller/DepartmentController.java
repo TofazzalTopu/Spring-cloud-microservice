@@ -43,6 +43,7 @@ public class DepartmentController {
         if (Objects.isNull(department)) department = new Department(id, "Math");
         System.out.println("counter: " + ++count);
         System.out.println("Round robin port: " + port);
+        log.info("department: " + department);
         return ResponseEntity.ok().body(department);
     }
 

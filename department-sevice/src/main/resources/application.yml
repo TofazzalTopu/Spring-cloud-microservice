@@ -1,5 +1,5 @@
-#server:
-#  port: 8082
+server:
+  port: 8082
 
 #eureka:
 #  client:
@@ -11,8 +11,14 @@
 spring:
   application:
     name: DEPARTMENT-SERVICE
+    sleuth:
+      tracing:
+        enabled: true
+      sampler:
+        probability: 1.0 # Always sample traces for development/testing
     zipkin:
       base-url: http://127.0.0.1:9411/zipkin/
+      enabled: true
   datasource:
     url: jdbc:h2:mem:mydb
     username: sa
@@ -70,3 +76,11 @@ resilience4j:
       rateLimiterEventsExample:
         cancel-running-future: false
         timeout-duration: 1s
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.sleuth: DEBUG
+  logstash:
+    destination: localhost:5000

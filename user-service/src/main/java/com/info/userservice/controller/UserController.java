@@ -3,14 +3,11 @@ package com.info.userservice.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import com.info.userservice.dto.Department;
@@ -21,6 +18,7 @@ import com.info.userservice.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/users")
@@ -40,6 +38,7 @@ public class UserController {
 
    @PostMapping
    public ResponseEntity<?> save(@RequestBody User user) throws URISyntaxException {
+      log.info("Request user body: " + user);
       return ResponseEntity.created(new URI("/")).body(userService.save(user));
    }
 
@@ -47,6 +46,8 @@ public class UserController {
    public ResponseEntity<?> findById(@PathVariable Long id) {
       System.out.println("port: " + port);
       User user = userService.findById(id);
+      log.info("user: " + user);
+
 //      Department department = restTemplate.getForObject("http://DEPARTMENT-SERVICE/departments/"+ user.getDepartmentId(), Department.class);
       Department department = feignClientDepartmentService.findById(user.getDepartmentId());
       return ResponseEntity.ok().body(new UserDTO(user, department));

@@ -33,3 +33,11 @@ spring:
 #DEPARTMENT-SERVICE:
 #  ribbon:
 #    listOfservers: localhost:8082,localhost:8085,localhost:8086
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.sleuth: DEBUG
+  logstash:
+    destination: localhost:5000
